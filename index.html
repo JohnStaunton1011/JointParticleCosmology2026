@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- EDIT: Update the page title if the workshop name changes -->
+  <title>Joint Cosmology &amp; Particle Physics Meeting 2026</title>
+
+  <!-- Google Fonts: EB Garamond (headings) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // Columbia palette — edit these if brand colors change
+            'cu-navy':      '#003087',
+            'cu-blue':      '#75AADB',
+            'cu-blue-dark': '#4A7FAA',
+            'cu-blue-pale': '#D9E9F5',
+            'site-bg':      '#F5F7FA',
+            'site-text':    '#1A1A2E',
+            'site-muted':   '#4A5568',
+          },
+          fontFamily: {
+            serif: ['"EB Garamond"', 'Georgia', 'serif'],
+            sans:  ['Inter', 'system-ui', 'sans-serif'],
+          },
+          maxWidth: {
+            'content': '900px',
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ─── Base ─────────────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+
+    /* Offset anchor scroll targets so sticky nav doesn't cover headings */
+    section[id], header[id] { scroll-margin-top: 56px; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #1A1A2E;
+      background: #ffffff;
+      line-height: 1.75;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'EB Garamond', Georgia, serif;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    /* ─── Animations (only transform + opacity) ────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      animation: fadeUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    .fade-up-delay-1 { animation-delay: 0.15s; }
+    .fade-up-delay-2 { animation-delay: 0.30s; }
+    .fade-up-delay-3 { animation-delay: 0.45s; }
+
+    /* ─── Navigation ───────────────────────────────────────── */
+    #main-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(0, 48, 135, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(117, 170, 219, 0.25);
+    }
+
+    .nav-link {
+      color: rgba(255,255,255,0.80);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .nav-link:hover  { color: #ffffff; border-color: #75AADB; }
+    .nav-link:focus-visible { outline: 2px solid #75AADB; outline-offset: 3px; border-radius: 2px; }
+    .nav-link:active { opacity: 0.7; }
+
+    /* ─── Hero grain texture ────────────────────────────────── */
+    .hero-grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    /* ─── Section headings ──────────────────────────────────── */
+    .section-title {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: clamp(1.75rem, 4vw, 2.375rem);
+      font-weight: 500;
+      color: #003087;
+      letter-spacing: -0.03em;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 2.5rem;
+      height: 3px;
+      background: #75AADB;
+      border-radius: 2px;
+    }
+
+    /* ─── Speaker cards ──────────────────────────────────────── */
+    .speaker-card {
+      background: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 1px 3px rgba(0,48,135,0.06),
+        0 4px 12px rgba(0,48,135,0.08),
+        0 12px 28px rgba(0,48,135,0.05);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.25s ease;
+    }
+    .speaker-card:hover {
+      transform: translateY(-5px);
+      box-shadow:
+        0 2px 6px rgba(0,48,135,0.08),
+        0 8px 20px rgba(0,48,135,0.12),
+        0 20px 40px rgba(0,48,135,0.08);
+    }
+
+    /* ─── Schedule table ─────────────────────────────────────── */
+    .schedule-table { width: 100%; border-collapse: collapse; }
+    .schedule-table th {
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #4A5568;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid #D9E9F5;
+    }
+    .schedule-table td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid #EDF2F7;
+      font-size: 0.9375rem;
+      vertical-align: top;
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .schedule-table tr.break-row td  { background: #F5F7FA; color: #4A5568; font-style: italic; }
+    .schedule-table tr:hover:not(.break-row) td { background: #F0F6FC; }
+
+    .time-cell {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      color: #003087;
+      font-weight: 500;
+      width: 6.5rem;
+    }
+
+    /* ─── Accordion (pure CSS) ───────────────────────────────── */
+    .accordion-input { display: none; }
+    .accordion-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 1rem 1.25rem;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #003087;
+      border-bottom: 1px solid #D9E9F5;
+      transition: background 0.15s ease;
+      user-select: none;
+    }
+    .accordion-label:hover { background: #F0F6FC; }
+    .accordion-label:focus-visible { outline: 2px solid #75AADB; outline-offset: -2px; }
+    .accordion-arrow {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      transition: transform 0.25s ease;
+      color: #75AADB;
+    }
+    .accordion-input:checked + .accordion-label .accordion-arrow {
+      transform: rotate(180deg);
+    }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .accordion-input:checked ~ .accordion-body {
+      max-height: 600px;
+    }
+
+    /* ─── Register CTA button ────────────────────────────────── */
+    .cta-btn {
+      display: inline-block;
+      background: #75AADB;
+      color: #003087;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      letter-spacing: 0.04em;
+      padding: 0.875rem 2.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s ease;
+      box-shadow: 0 2px 8px rgba(117,170,219,0.35), 0 6px 20px rgba(117,170,219,0.20);
+    }
+    .cta-btn:hover  { background: #91BDE4; transform: translateY(-2px); }
+    .cta-btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
+    .cta-btn:active { transform: translateY(0); opacity: 0.85; }
+
+    /* ─── Mobile nav toggle ──────────────────────────────────── */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    /* ─── Logo pill cards on dark background ───────────────── */
+    .logo-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 12px;
+      padding: 14px 24px;
+      box-shadow: 0 2px 12px rgba(0,48,135,0.18), 0 1px 3px rgba(0,0,0,0.10);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+    }
+    .logo-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,48,135,0.25), 0 2px 6px rgba(0,0,0,0.10);
+    }
+  </style>
+</head>
+
+<body class="font-sans">
+
+  <!-- ═══════════════════════════════════════════════════════
+       NAVIGATION
+       ═══════════════════════════════════════════════════════ -->
+  <nav id="main-nav" aria-label="Main navigation">
+    <div class="max-w-content mx-auto px-6 flex items-center justify-between h-14">
+
+      <!-- Site wordmark / short title -->
+      <a href="#" class="font-serif text-white text-base font-medium tracking-tight hover:opacity-80 transition-opacity">
+        <!-- EDIT: Change this short title if desired -->
+        JCPPM 2026
+      </a>
+
+      <!-- Desktop nav links -->
+      <div class="hidden md:flex items-center gap-7">
+        <a href="#about"      class="nav-link">About</a>
+        <a href="#speakers"   class="nav-link">Speakers</a>
+        <a href="#program"    class="nav-link">Program</a>
+        <a href="#organizers" class="nav-link">Organizers</a>
+        <a href="#travel"     class="nav-link">Travel</a>
+        <a href="#register"   class="nav-link" style="color:#75AADB; border-color:#75AADB;">Register</a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="hamburger"
+        class="md:hidden text-white p-2 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-cu-blue"
+        aria-label="Open menu"
+        aria-expanded="false"
+        onclick="toggleMenu(this)"
+      >
+        <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect y="0"  width="22" height="2" rx="1" fill="currentColor"/>
+          <rect y="7"  width="22" height="2" rx="1" fill="currentColor"/>
+          <rect y="14" width="22" height="2" rx="1" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu" class="md:hidden flex-col px-6 pb-4 gap-1 border-t border-white/10">
+      <a href="#about"      class="nav-link block py-2" onclick="closeMenu()">About</a>
+      <a href="#speakers"   class="nav-link block py-2" onclick="closeMenu()">Speakers</a>
+      <a href="#program"    class="nav-link block py-2" onclick="closeMenu()">Program</a>
+      <a href="#organizers" class="nav-link block py-2" onclick="closeMenu()">Organizers</a>
+      <a href="#travel"     class="nav-link block py-2" onclick="closeMenu()">Travel</a>
+      <a href="#register"   class="nav-link block py-2" style="color:#75AADB;" onclick="closeMenu()">Register</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════ -->
+  <header
+    class="hero-grain relative overflow-hidden"
+    style="
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 40%, rgba(74,127,170,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(0,48,135,0.6)   0%, transparent 55%),
+        #003087;
+      padding: clamp(4rem, 10vw, 7rem) 1.5rem clamp(3.5rem, 8vw, 5.5rem);
+    "
+  >
+    <div class="hero-content max-w-content mx-auto text-center">
+
+      <!-- Conference title -->
+      <h1 class="fade-up font-serif text-white font-medium"
+          style="font-size: clamp(2.25rem, 6vw, 3.75rem);">
+        <!-- EDIT: Workshop title -->
+        Joint Cosmology &amp; Particle Physics Meeting
+      </h1>
+
+      <!-- Date and venue -->
+      <p class="fade-up fade-up-delay-1 mt-4 font-sans text-cu-blue"
+         style="font-size: clamp(1rem, 2.5vw, 1.1875rem); letter-spacing: 0.01em;">
+        <!-- EDIT: Date and venue -->
+        TBD (Week of May 26th), 2026
+        <span class="mx-2 opacity-40">&middot;</span>
+        Center for Theoretical Physics, Columbia University
+      </p>
+
+      <!-- Divider -->
+      <div class="fade-up fade-up-delay-2 mx-auto mt-8 mb-8" style="width:3rem; height:2px; background:#75AADB; border-radius:1px; opacity:0.6;"></div>
+
+      <!-- Institutional logos -->
+      <div class="fade-up fade-up-delay-3 flex flex-wrap items-center justify-center gap-6 md:gap-10">
+
+        <!-- Columbia logo -->
+        <div class="logo-card">
+          <a href="https://www.columbia.edu" target="_blank" rel="noopener" aria-label="Columbia University">
+            <img
+              src="brand_assets/Columbia_Logo_png.png"
+              alt="Columbia University"
+              style="height: 52px; width: auto; display: block;"
+            />
+          </a>
+        </div>
+
+        <!-- NYU logo -->
+        <div class="logo-card">
+          <a href="https://www.nyu.edu" target="_blank" rel="noopener" aria-label="New York University">
+            <img
+              src="brand_assets/NYU_Logo.png"
+              alt="New York University"
+              style="height: 52px; width: auto; display: block;"
+            />
+          </a>
+        </div>
+
+        <!-- UPenn logo -->
+        <div class="logo-card">
+          <a href="https://www.upenn.edu" target="_blank" rel="noopener" aria-label="University of Pennsylvania">
+            <img
+              src="brand_assets/Upenn_Logo.png"
+              alt="University of Pennsylvania"
+              style="height: 52px; width: auto; display: block;"
+            />
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ABOUT
+       ═══════════════════════════════════════════════════════ -->
+  <section id="about" class="bg-white py-20 px-6">
+    <div class="max-w-content mx-auto" style="max-width: 700px;">
+      <h2 class="section-title mb-8">About</h2>
+      <!-- EDIT: Replace the paragraph text below with your own description of the workshop.
+           Aim for 3–5 sentences covering: what the meeting is, its history, and who should attend. -->
+      <p class="text-site-text" style="font-size: 1.0625rem;">
+        The Joint Cosmology &amp; Particle Physics Meeting is a regional workshop that was once held 
+        regularly before the pandemic, bringing together faculty, post-docs, and graduate students alike
+        from Columbia, NYU, and UPenn. We will hear a few talks and discuss current topic at the intersection
+        of high-energy particle physics and cosmology. 
+      </p>
+      <p class="mt-4 text-site-text" style="font-size: 1.0625rem;">
+        This meeting comes at an opportune time since there has been a large growth in the use of techniques 
+        developed in the realm of scattering amplitudes to questions in gravitational physics. Meanwhile, questions
+        and strategies developed to tackle questions in gravity have helped advance our understanding of scattering
+        amplitudes and their generalizations. The talks are intended to be accessible to the broader community and to encourage discussion across 
+        our different subfields. 
+      </p>
+      <p class="mt-4 text-site-muted" style="font-size: 0.9375rem;">
+        <!-- EDIT: Add any logistical notes here (lunch provided, attendance free, etc.) -->
+        Attendance is free for all students, post docs, and faculty at the aforementioned institutions. 
+        Registration is requested for planning purposes, as we will provide lunch. If there are any questions of concerns,
+        please send an email to <a href="mailto:jrs2277@columbia.edu">jrs2277@columbia.edu</a>.  
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SPEAKERS
+       ═══════════════════════════════════════════════════════ -->
+  <section id="speakers" style="background:#F5F7FA;" class="py-20 px-6">
+    <div class="max-w-content mx-auto">
+      <h2 class="section-title mb-10">Speakers</h2>
+
+      <!-- EDIT: Replace the placeholder organizer entries below.
+           Copy/paste an <li> to add more, or delete one to remove. -->
+      <ul class="space-y-5">
+
+        <li class="flex items-start gap-4">
+          <div class="mt-1 w-2 h-2 rounded-full flex-shrink-0" style="background:#75AADB; margin-top:0.45rem;"></div>
+          <div>
+            <!-- EDIT: Organizer name -->
+            <p class="font-serif text-lg font-medium text-site-text">Speaker 1</p>
+            <!-- EDIT: Organizer title and institution -->
+            <p class="text-sm text-site-muted"> Position · School</p>
+          </div>
+        </li>
+
+        <li class="flex items-start gap-4">
+          <div class="mt-1 w-2 h-2 rounded-full flex-shrink-0" style="background:#75AADB; margin-top:0.45rem;"></div>
+          <div>
+            <p class="font-serif text-lg font-medium text-site-text">Speaker 2</p>
+            <p class="text-sm text-site-muted"> Position · School</p>
+          </div>
+        </li>
+
+        <li class="flex items-start gap-4">
+          <div class="mt-1 w-2 h-2 rounded-full flex-shrink-0" style="background:#75AADB; margin-top:0.45rem;"></div>
+          <div>
+            <p class="font-serif text-lg font-medium text-site-text">Speaker 3</p>
+            <p class="text-sm text-site-muted"> Position · School</p>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       PROGRAM / SCHEDULE
+       ═══════════════════════════════════════════════════════ -->
+  <section id="program" class="bg-white py-20 px-6">
+    <div class="max-w-content mx-auto">
+      <h2 class="section-title mb-12">Program</h2>
+
+      <!-- EDIT: Update the date line below -->
+      <p class="mb-6 text-site-muted text-sm font-medium uppercase tracking-widest">
+        Friday, May 29, 2026
+      </p>
+
+      <!-- Schedule table.
+           To add a row: copy any <tr> block and update the time, speaker, and title.
+           For a break row, add class="break-row" to the <tr> and leave the speaker cell empty.
+           To remove a row: delete the entire <tr>…</tr> block. -->
+      <div class="rounded-xl overflow-hidden border border-cu-blue-pale" style="overflow-x:auto;">
+        <table class="schedule-table" style="min-width:480px;">
+          <thead>
+            <tr>
+              <th style="width:7rem;">Time</th>
+              <th>Speaker</th>
+              <th>Title</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- EDIT: Update time, speaker, and talk title for each row -->
+            <tr>
+              <td class="time-cell">10:15 AM</td>
+              <td class="font-medium">Welcome &amp; Opening Remarks</td>
+              <td class="text-site-muted">—</td>
+            </tr>
+
+            <tr>
+              <td class="time-cell">10:30 AM</td>
+              <!-- EDIT: Speaker name -->
+              <td class="font-medium">Speaker Name</td>
+              <!-- EDIT: Talk title -->
+              <td class="text-site-muted italic">Talk Title Placeholder</td>
+            </tr>
+
+            <tr>
+              <td class="time-cell">11:30 AM</td>
+              <td class="font-medium">Speaker Name</td>
+              <td class="text-site-muted italic">Talk Title Placeholder</td>
+            </tr>
+
+            <!-- Break row — EDIT: adjust time and description as needed -->
+            <tr class="break-row">
+              <td class="time-cell">12:30 PM</td>
+              <td colspan="2">Lunch</td>
+            </tr>
+
+            <tr>
+              <td class="time-cell">2:00 PM</td>
+              <td class="font-medium">Speaker Name</td>
+              <td class="text-site-muted italic">Talk Title Placeholder</td>
+            </tr>
+
+            <tr>
+              <td class="time-cell">3:00 PM</td>
+              <td class="font-medium">Speaker Name</td>
+              <td class="text-site-muted italic">Talk Title Placeholder</td>
+            </tr>
+
+            <tr class="break-row">
+              <td class="time-cell">4:00 PM</td>
+              <td colspan="2">Coffee Break</td>
+            </tr>
+
+            <tr>
+              <td class="time-cell">4:30 PM</td>
+              <td class="font-medium">Speaker Name</td>
+              <td class="text-site-muted italic">Talk Title Placeholder</td>
+            </tr>
+
+            <tr>
+              <td class="time-cell">5:30 PM</td>
+              <td class="font-medium">Closing Discussion</td>
+              <td class="text-site-muted">—</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div><!-- end schedule table wrapper -->
+
+      <!-- EDIT: Add any notes about the schedule format, talk length, etc. -->
+      <p class="mt-4 text-site-muted" style="font-size:0.875rem;">
+        Each talk is 45 minutes + 15 minutes for questions and discussion. Schedule subject to change.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ORGANIZERS
+       ═══════════════════════════════════════════════════════ -->
+  <section id="organizers" style="background:#F5F7FA;" class="py-20 px-6">
+    <div class="max-w-content mx-auto">
+      <h2 class="section-title mb-10">Organizers</h2>
+
+      <!-- EDIT: Replace the placeholder organizer entries below.
+           Copy/paste an <li> to add more, or delete one to remove. -->
+      <ul class="space-y-5">
+
+        <li class="flex items-start gap-4">
+          <div class="mt-1 w-2 h-2 rounded-full flex-shrink-0" style="background:#75AADB; margin-top:0.45rem;"></div>
+          <div>
+            <!-- EDIT: Organizer name -->
+            <p class="font-serif text-lg font-medium text-site-text">John Staunton</p>
+            <!-- EDIT: Organizer title and institution -->
+            <p class="text-sm text-site-muted"> Graduate Student · Columbia University</p>
+          </div>
+        </li>
+
+        <li class="flex items-start gap-4">
+          <div class="mt-1 w-2 h-2 rounded-full flex-shrink-0" style="background:#75AADB; margin-top:0.45rem;"></div>
+          <div>
+            <p class="font-serif text-lg font-medium text-site-text">Massimiliano Riva</p>
+            <p class="text-sm text-site-muted"> Post doc · Columbia University</p>
+          </div>
+        </li>
+
+        <li class="flex items-start gap-4">
+          <div class="mt-1 w-2 h-2 rounded-full flex-shrink-0" style="background:#75AADB; margin-top:0.45rem;"></div>
+          <div>
+            <p class="font-serif text-lg font-medium text-site-text">Lam Hui</p>
+            <p class="text-sm text-site-muted"> Professor · Columbia University</p>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TRAVEL & PRACTICAL INFO
+       ═══════════════════════════════════════════════════════ -->
+  <section id="travel" class="bg-white py-20 px-6">
+    <div class="max-w-content mx-auto">
+      <h2 class="section-title mb-3">Travel &amp; Practical Information</h2>
+
+      <!-- EDIT: Update the venue address if the room/building changes -->
+      <p class="mt-6 mb-8 text-site-text" style="font-size:1.0625rem;">
+        The meeting will be held at the
+        <strong>Center for Theoretical Physics, Columbia University</strong>,<br/>
+        538 West 120th Street, New York, NY 10027.
+        <!-- EDIT: Add the room number once confirmed, e.g.: Room 705, Pupin Hall -->
+      </p>
+
+      <!-- Accordion sections — expand/collapse with pure CSS checkboxes -->
+      <div class="rounded-xl border border-cu-blue-pale overflow-hidden">
+
+        <!-- Getting There -->
+        <div>
+          <input type="checkbox" id="acc-transit" class="accordion-input" />
+          <label for="acc-transit" class="accordion-label" tabindex="0">
+            Getting There
+            <svg class="accordion-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M3 6l5 5 5-5"/>
+            </svg>
+          </label>
+          <div class="accordion-body">
+            <div class="px-5 py-4 text-site-text" style="font-size:0.9375rem;">
+              <!-- EDIT: Update transit directions as needed -->
+              <p class="font-medium mb-2">Getting There</p>
+              <ul class="list-disc list-inside space-y-1 text-site-muted ml-1">
+                <li><strong>1 train</strong> to 116th St–Columbia University (walk north on Broadway)</li>
+                <li><strong>A/C/B/D trains</strong> to 125th St, then walk south on Broadway</li>
+              </ul>
+              <p class="mt-4 font-medium mb-2">Suggested Routes</p>
+              <ul class="list-disc list-inside space-y-1 text-site-muted ml-1">
+                <li><strong>From NYU:</strong> Take the uptown N from 8th st to Times Square. Transfer to the 1 train to 116th st</li>
+                <li><strong>From UPenn</strong> Take SEPTA to Trenton, NJ Transit from Trenton to Penn Station, then 1 train to 116th</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dining -->
+        <div>
+          <input type="checkbox" id="acc-dining" class="accordion-input" />
+          <label for="acc-dining" class="accordion-label" tabindex="0" style="border-bottom:none;">
+            Dining &amp; Refreshments
+            <svg class="accordion-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M3 6l5 5 5-5"/>
+            </svg>
+          </label>
+          <div class="accordion-body">
+            <div class="px-5 py-4 text-site-text" style="font-size:0.9375rem;">
+              <!-- EDIT: Update with actual meal plans for the day -->
+              <p class="text-site-muted">
+                Lunch will be provided as well as coffee during the break. For dinner, there are
+                many options on Broadway and Amsterdam Avenue.
+              </p>
+              <!-- EDIT: Add specific restaurant recommendations if desired -->
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end accordion wrapper -->
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       REGISTRATION
+       ═══════════════════════════════════════════════════════ -->
+  <section id="register" style="background:#003087;" class="py-20 px-6">
+    <div class="max-w-content mx-auto text-center">
+
+      <h2 class="font-serif font-medium text-white mb-4"
+          style="font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -0.03em;">
+        Register
+      </h2>
+
+      <!-- EDIT: Update the registration description and deadline -->
+      <p class="text-cu-blue mb-2" style="font-size:1.0625rem; max-width:560px; margin-left:auto; margin-right:auto;">
+        Registration is free and open to all students, post-docs, and faculty. Please register so we can plan
+        for catering and room capacity.
+      </p>
+      <p class="mb-10 text-cu-blue-pale opacity-70" style="font-size:0.875rem;">
+        <!-- EDIT: Add a registration deadline if there is one -->
+        Registration deadline: Friday, May 15, 2026
+      </p>
+
+      <!-- EDIT: Replace # with your actual registration link (e.g. Google Form, Eventbrite, etc.) -->
+      <a href="#" class="cta-btn" target="_blank" rel="noopener">
+        Register Here
+      </a>
+
+      <!-- EDIT: Add any additional notes (e.g. capacity limit, waitlist) -->
+      <p class="mt-8 text-cu-blue opacity-50" style="font-size:0.8125rem;">
+        Questions? Contact us at
+        <!-- EDIT: Replace with the actual contact email address -->
+        <a href="mailto:jrs2277@columbia.edu" class="underline hover:opacity-80 transition-opacity">jrs2277@columbia.edu</a>
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════ -->
+  <footer style="background:#001a52; border-top:1px solid rgba(117,170,219,0.15);" class="py-12 px-6">
+    <div class="max-w-content mx-auto">
+
+      <!-- Logos row -->
+      <div class="flex flex-wrap items-center justify-center gap-10 md:gap-16 mb-10">
+        <img src="brand_assets/Columbia_Logo_png.png" alt="Columbia University" class="logo-white-filter" style="height:44px; width:auto; opacity:0.65;" />
+        <img src="brand_assets/NYU_Logo.png"          alt="New York University"   class="logo-white-filter" style="height:44px; width:auto; opacity:0.65;" />
+        <img src="brand_assets/Upenn_Logo.png"        alt="University of Pennsylvania" class="logo-white-filter" style="height:44px; width:auto; opacity:0.65;" />
+      </div>
+
+      <!-- Footer text -->
+      <div class="text-center" style="color:rgba(117,170,219,0.55); font-size:0.8125rem;">
+        <!-- EDIT: Update year if reusing this template -->
+        <p class="font-medium" style="color:rgba(117,170,219,0.75);">Joint Cosmology &amp; Particle Physics Meeting &middot; 2026</p>
+        <p class="mt-1">
+          <!-- EDIT: Replace with actual contact email -->
+          <a href="mailto:jrs2277@columbia.edu" class="hover:opacity-80 transition-opacity" style="color:rgba(117,170,219,0.55);">jrs2277@columbia.edu</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════
+       JAVASCRIPT — mobile menu toggle only
+       ═══════════════════════════════════════════════════════ -->
+  <script>
+    function toggleMenu(btn) {
+      const menu = document.getElementById('mobile-menu');
+      const isOpen = menu.classList.contains('open');
+      menu.classList.toggle('open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    }
+    function closeMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.remove('open');
+      document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
+    }
+  </script>
+
+</body>
+</html>
